@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import { render } from '@testing-library/react';
 import List from './List';
+import GroceryForm from './GroceryForm';
 
 class App extends Component {
   state = {
@@ -12,6 +13,14 @@ class App extends Component {
     ]
   }
 
+  addItem = (itemName) => {
+    const newItem = { id: `${Math.random()}`,name: itemName, complete: false }
+    const newItems = [newItem, ...this.state.groceries]
+    this.setState({
+      groceries: newItems,
+    })
+  }
+
   renderGroceries = () => {
     const {groceries} = this.state
     return groceries.map(item =>
@@ -19,15 +28,43 @@ class App extends Component {
       )
   }
   
+  handleClick = (id) => {
+    console.log("click")
+    console.log(id)
+    const { groceries } = this.state
+    const newItems = groceries.map((item) => {
+      if(item.id !== id) return item
+      return { ...item, complete: !item.complete}
+    }) 
+    this.setState({
+      groceries: newItems,
+    })
+  }
+  //   const { groceries } = this.state
+  //   this.setState({
+  //     groceries: groceries.map( item => {
+  //       if (item.id === id ) {
+  //         return {
+  //           ...item,
+  //           complete: !item.complete
+  //         }
+  //       }
+  //       return item
+  //     })
+  //   })
+  // }
+
 
   render(){
   const {groceries} = this.state
   
   return (
     <div>
-      <ul>
-        <List name="Grocery List" items={groceries}/>
-      </ul>
+      <h1>Grocery List</h1>
+      <GroceryForm addItem={this.addItem} />
+        <List
+        itemClick={this.handleClick}
+        items={groceries} />
     </div>
   );
 }
