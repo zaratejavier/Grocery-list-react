@@ -1,26 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
+import { render } from '@testing-library/react';
+import List from './List';
 
-function App() {
+class App extends Component {
+  state = {
+    groceries: [
+      {id: 1, name: "Milk", complete: false },
+      {id: 2, name: "Bread", complete: true },
+      {id: 3, name: "Butter", complete: false },
+    ]
+  }
+
+  renderGroceries = () => {
+    const {groceries} = this.state
+    return groceries.map(item =>
+        <li key={item.id}>{item.name}</li>
+      )
+  }
+  
+
+  render(){
+  const {groceries} = this.state
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <ul>
+        <List name="Grocery List" items={groceries}/>
+      </ul>
     </div>
   );
+}
+
 }
 
 export default App;
